@@ -71,6 +71,10 @@ class _Login extends State<Login>{
                         ),
                       ),
                       onPressed: () async {
+
+                        final allDocuments = await getAllDocuments();
+                        print(allDocuments);
+
                       bool isLogin = await verifyLogin(_email.text, _password.text);
 
                       if (isLogin)

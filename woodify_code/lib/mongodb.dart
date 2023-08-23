@@ -25,6 +25,27 @@ Future <bool> verifyLogin(String email, String password) async
 
 }
 
+Future<List<Map<String, dynamic>>> getAllDocuments()  async {
+  var db = await Db.create(MONGO_URL);
+  await db.open();
+
+  final collection = db.collection('products');
+
+  final cursor = collection.find(); // Fetch all documents
+
+  final documents = await cursor.toList();
+
+
+
+  await db.close();
+
+
+
+  return documents;
+
+  //to create var final allDocuments = await getAllDocuments();
+}
+
 
 class MongoDatabase {
 
@@ -57,6 +78,24 @@ class MongoDatabase {
       "email": email,
       "password": password,
       "catagory": cat});
+
+    await db.close();
+  }
+
+  static productInsert(String p_name, String about, String stock, String price, int cat) async
+  {
+    //0 for indoor
+    //1 for outdoor
+    var db = await Db.create(MONGO_URL);
+    await db.open();
+    var collection_name = db.collection("products");
+    await collection_name.insertOne({
+      "b_id": userDoc["_id"],
+      "p_name": p_name,
+      "about": about,
+      "stock": stock,
+      "price": price,
+      "cat": cat});
 
     await db.close();
   }

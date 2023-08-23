@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:woodify/const.dart';
+import 'package:woodify/mongodb.dart';
 //import 'package:image_picker/image_picker.dart';
 import 'package:woodify/reuse_widgets/widgets.dart';
 
@@ -13,31 +16,24 @@ class Add_Pro_s extends StatefulWidget {
 }
 
 class _Add_Pro_sState extends State<Add_Pro_s> {
-  File? image;
+  XFile? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? selectedImage = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = selectedImage;
+    });
+  }
   TextEditingController _addpro = TextEditingController();
   TextEditingController _aboutpro = TextEditingController();
   TextEditingController _stock = TextEditingController();
   TextEditingController _price = TextEditingController();
 
-  // Future pickImage() async
-  // {
-  //
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (image == null)
-  //         return;
-  //
-  //     final imageTemporary = File(image.path);
-  //     setState(() {
-  //       this.image = imageTemporary;
-  //     });
-  //   } on PlatformException catch (f) {
-  //     print("Failed");
-  //   }
-  //
-  //
-  //
-  // }
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -60,21 +56,18 @@ class _Add_Pro_sState extends State<Add_Pro_s> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: 153,
-                    height: 153,
-
-                    decoration: BoxDecoration(
-                      color: boxcolor,
-                      shape: BoxShape.circle,
-                    ),
-
-                    child: Icon(
-                      Icons.add,
-                      size: 100,
-                      color: primaryBG,
+                  _imageFile == null
+                      ? Text('No image selected')
+                      : ClipOval(
+                       child: Image.file(
+                        File(_imageFile!.path),
+                        width: 153,
+                        height: 153,
+                        fit: BoxFit.cover,
                     ),
                   ),
+
+
                   SizedBox(height: 20),
                   Container(
                     child: CustomTextField(
@@ -118,27 +111,23 @@ class _Add_Pro_sState extends State<Add_Pro_s> {
             SizedBox(height: 20),
             Container(
               child: CustomButton(text: 'Add Image', onPressed: () {
-                //pickImage();
-                if(image!=null)
-                  {
-                      Container(
-                        child: SnackBar(
-                          content: Row(
-                          children: [
-                            Icon(Icons.add_a_photo),
-                            SizedBox(width: 20),
-                            Expanded(child: Text("Photo Successfully Uploaded"))
-                          ],
-                        ),
-                          
-                        ),
-                      );
-                  }
+                _pickImage();
               }, textColor: Colors.black, color: boxcolor),
             ),
             SizedBox(height: 20),
             Container(
-              child: CustomButton(text: 'Submit', onPressed: () { }, textColor: Colors.black, color: boxcolor,),
+              child: CustomButton(text: 'Submit', onPressed: () {
+                MongoDatabase.productInsert(_addpro.text, _aboutpro.text, _stock.text, _price.text, 0);
+                final snackBar = SnackBar(content: Text("Product Successfully Added"),
+                  action: SnackBarAction(
+                    label: 'Go Back',
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
+                  ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }, textColor: Colors.black, color: boxcolor,),
             ),
           ],
         ),

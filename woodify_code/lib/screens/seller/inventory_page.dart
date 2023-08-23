@@ -3,6 +3,8 @@ import 'package:woodify/reuse_widgets/widgets.dart';
 //import 'package:project1/screens/seller/add_pro.dart';
 import 'package:woodify/screens/seller/current_product.dart';
 
+import 'add_pro.dart';
+
 class Inventory_s extends StatefulWidget {
   const Inventory_s({super.key});
 
@@ -103,7 +105,7 @@ class _Inventory_sState extends State<Inventory_s> {
                 textColor: Colors.black,
                 text: "Add new product",
                 onPressed: (){
-                  //Navigator.push(context,MaterialPageRoute(builder: (context) => Add_Pro_s()));
+                  Navigator.push(context,MaterialPageRoute(builder: (context) => Add_Pro_s()));
                 },
 
               ),

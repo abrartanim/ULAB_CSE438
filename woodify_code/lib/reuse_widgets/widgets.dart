@@ -342,7 +342,138 @@ class Custom_AppDrawer extends StatelessWidget {
   }
 }
 
+class Items extends StatelessWidget {
+  final itemname;
+  final price;
 
+  const Items({super.key, required this.itemname, required this.price});
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 319,
+          height: 80,
+          child: Stack(
+            children: [
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Container(
+                  width: 319,
+                  height: 80,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFFC1D0B5),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 12,
+                top: 19,
+                child: Container(
+                  width: 74,
+                  height: 40,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.RRRa8QV1S_NTlFn2U0Y0jwHaHa%26pid%3DApi&f=1&ipt=27898192db44b958bfa7dc937ae472f4ef8cef656165bc7845f2307a4d6ecd21&ipo=images"),
+                      fit: BoxFit.contain,
+                    ),
+                    shape: CircleBorder() //RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 86,
+                top: 29,
+                child: Container(
+                  width: 113.93,
+                  height: 41.44,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: SizedBox(
+                          width: 113.93,
+                          height: 12.79,
+                          child: Text(
+                            '$itemname',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontFamily: 'Roboto',
+                              //fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 30,
+                        child: SizedBox(
+                          width: 59.24,
+                          height: 11.44,
+                          child: Text(
+                            '$price',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 8,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 241,
+                top: 38,
+                child: Container(
+                  width: 26,
+                  height: 26,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 0,
+                        //top: 10,
+                        bottom: 15,
+                        child: Container(
+                          width: 26,
+                          height: 26,
+                          child : IconButton(
+                            icon: Icon(Icons.add, color: Colors.white),
+                            onPressed: () {
+                              // Handle button press
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 281,
+                top: 45,
+                child: Container(
+                  width: 13,
+                  height: 13,
+                  child: Stack(children: [
+
+                      ]),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 // Move Navigator.push(context,MaterialPageRoute(builder: (context) => PageNAME));
 

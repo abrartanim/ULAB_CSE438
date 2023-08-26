@@ -1,35 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:woodify/query.dart';
+import 'package:woodify/const.dart';
 import 'package:woodify/reuse_widgets/widgets.dart';
 import 'package:woodify/screens/buyer/editpro.dart';
-import 'package:woodify/screens/seller/inventory_page.dart';
 
-import '../../const.dart';
+import '../login.dart';
 
-class Homepage_s extends StatefulWidget {
-  const Homepage_s({super.key});
+class MyProfile_b extends StatefulWidget {
+  const MyProfile_b({super.key});
 
   @override
-  State<Homepage_s> createState() => _Homepage_sState();
+  State<MyProfile_b> createState() => _MyProfile_bState();
 }
 
-class _Homepage_sState extends State<Homepage_s> {
+class _MyProfile_bState extends State<MyProfile_b> {
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = Color.fromRGBO(255, 248, 222, 1);
     return Scaffold(
-      backgroundColor: backgroundColor,
-
+      backgroundColor: primaryBG,
+      appBar: AppBar(
+        backgroundColor: boxcolor,
+        title: Text("My Profile"),
+      ),
+      drawer: Custom_AppDrawer(),
       body: Center(
         child: Column(
           //mainAxisAlignment:  MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Container(
-              child: CustomAppBar(
-                title: "Home",
 
-              ),
-            ),
             SizedBox(height: 50),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -47,32 +44,22 @@ class _Homepage_sState extends State<Homepage_s> {
                     onPressed: () {
                       Navigator.push(context,MaterialPageRoute(builder: (context) => EditProfile_b()));
                     },
-                    color: Colors.white,
+                    color: boxcolor,
                     textColor: Colors.black,
                   ),
                 ),
 
-                SizedBox(height: 30),
-                Container(
-                  child: CustomButton(
-                    text: "Inventory",
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => Inventory_s()));
-                    },
-                    color: Colors.white,
-                    textColor: Colors.black,
-                  ),
-                ),
 
                 SizedBox(height: 30),
                 Container(
                   child: CustomButton(
-                    text: "Query Section",
-
+                    text: "Logout",
                     onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => Query()));
+
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
+                      userDoc.clear();
                     },
-                    color: Colors.white,
+                    color: boxcolor,
                     textColor: Colors.black,
                   ),
                 ),

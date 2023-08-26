@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:woodify/const.dart';
 import 'package:woodify/reuse_widgets/widgets.dart';
+import 'package:woodify/screens/admin/itemorder.dart';
+import 'package:woodify/screens/admin/seller_list.dart';
+import 'package:woodify/screens/buyer/homepage.dart';
+import 'package:woodify/screens/login.dart';
 import 'package:woodify/screens/seller/inventory_page.dart';
 
 class Homepage_a extends StatefulWidget {
@@ -32,16 +37,40 @@ class _Homepage_aState extends State<Homepage_a> {
               children: <Widget>[
                 Container(
                   child: Profile_image(
-                    image_url: "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2F2.bp.blogspot.com%2F-0rLFh_JbOzQ%2FVVTtjHV98DI%2FAAAAAAAAB6M%2FcOJ84R_cUpk%2Fs1600%2Fwhatsappimages%252Bfunny%252Bdp%252B(9).jpg&f=1&nofb=1&ipt=777c67f8d14cdccb1f891acf7d06e4b97f795c763c917880efb7238846ddc909&ipo=images",
+                    image_url: img,
                   ),
                 ),
 
                 SizedBox(height: 80),
                 Container(
                   child: CustomButton(
-                    text: "Seller",
+                    text: "Seller List",
                     onPressed: () {
-                      //Navigator.push(context,MaterialPageRoute(builder: (context) => ));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => SellerList_a()));
+                    },
+                    color: Colors.white,
+                    textColor: Colors.black,
+                  ),
+                ),
+
+                //SizedBox(height: 30),
+                // Container(
+                //   child: CustomButton(
+                //     text: "Query Report",
+                //     onPressed: () {
+                //       //Navigator.push(context,MaterialPageRoute(builder: (context) => Inventory_s()));
+                //     },
+                //     color: Colors.white,
+                //     textColor: Colors.black,
+                //   ),
+                // ),
+
+                SizedBox(height: 30),
+                Container(
+                  child: CustomButton(
+                    text: "Items Ordered",
+                    onPressed: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => ItemOrder()));
                     },
                     color: Colors.white,
                     textColor: Colors.black,
@@ -51,20 +80,12 @@ class _Homepage_aState extends State<Homepage_a> {
                 SizedBox(height: 30),
                 Container(
                   child: CustomButton(
-                    text: "Query Report",
+                    text: "Logout",
                     onPressed: () {
-                      //Navigator.push(context,MaterialPageRoute(builder: (context) => Inventory_s()));
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Login()));
+                      userDoc.clear();
+                      cart.clear();
                     },
-                    color: Colors.white,
-                    textColor: Colors.black,
-                  ),
-                ),
-
-                SizedBox(height: 30),
-                Container(
-                  child: CustomButton(
-                    text: "Approve Sellers",
-                    onPressed: () {},
                     color: Colors.white,
                     textColor: Colors.black,
                   ),

@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:woodify/const.dart';
-import 'package:woodify/screens/buyer/homepage.dart';
-import 'package:woodify/screens/seller/homepage.dart';
 
 import '../../mongodb.dart';
 import '../../reuse_widgets/widgets.dart';
 
-class Signup extends StatefulWidget {
+class EditProfile_b extends StatefulWidget {
   @override
-  _SignupState createState() => _SignupState();
+  _EditProfile_bState createState() => _EditProfile_bState();
 }
 
-class _SignupState extends State<Signup> {
+class _EditProfile_bState extends State<EditProfile_b> {
   final _formKey = GlobalKey<FormState>();
   String firstName = '';
   String lastName = '';
@@ -19,38 +17,24 @@ class _SignupState extends State<Signup> {
   String address = '';
   String password = '';
 
-  void _submitForm0() {
+  void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      MongoDatabase.userInsert(firstName, lastName, email, password, address,  0);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Homepage(), // SecondScreen is the new screen
-        ),
-      );
-    }
-  }
-
-  void _submitForm1()
-  {
-    if (_formKey.currentState!.validate()) {
-      MongoDatabase.userInsert(firstName, lastName, email, password, address,  1);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Homepage_s(), // SecondScreen is the new screen
-        ),
-      );
+      // Perform form submission logic here
+      MongoDatabase.updateUserData(userDoc['_id'] , firstName, lastName, password, address);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor = Color.fromRGBO(193, 208, 181, 1);
+    backgroundColor: primaryBG;
     return Scaffold(
 
-        backgroundColor:backgroundColor,
-
+        backgroundColor: primaryBG,
+        appBar: AppBar(
+          backgroundColor: boxcolor,
+          title: Text("Edit Profile"),
+        ),
+        drawer: Custom_AppDrawer(),
 
         body:SingleChildScrollView(
             child: Padding(
@@ -61,9 +45,6 @@ class _SignupState extends State<Signup> {
                   children: [
                     Container(
 
-                      height: 218,
-                      width: 218,
-                      child: Image.asset('assets/images/woodify_logo.png'),
                     ),
                     TextFormField(
                       decoration: InputDecoration(labelText: 'First Name'),
@@ -132,41 +113,32 @@ class _SignupState extends State<Signup> {
                     ),
                     SizedBox(height: 16),
                     Row(
-
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CustomButton(
+                          text: "Save Changes",
+                          onPressed: () {
+                            _submitForm();
+                            _formKey.currentState?.reset();
+                            Navigator.pop(context);
 
 
-                      children: <Widget>[
-                        SizedBox(height: 20),
-                        Container(
-                          child: ElevatedButton(onPressed: (){
-                            _submitForm1();
+
                           },
-                            child: const Text('Sign up as a seller'), style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.black, backgroundColor: boxcolor,
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50), // Border radius of the button
-                              ),
-                            ),),
+                          color: boxcolor,
+                          textColor: Colors.black,
                         ),
 
-                        //SizedBox(height: 30),
-                        Container(
-                          child: ElevatedButton(onPressed: (){
-                            _submitForm0();
-
-                          }, child: const Text('Sign up as a buyer'), style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.black, backgroundColor: boxcolor,
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50), // Border radius of the button
-                            ),
-                          ),),),
-
-
+                        CustomButton(
+                          text: "Go Back",
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: boxcolor,
+                          textColor: Colors.black,
+                        ),
                       ],
-                    )
+                    ),
 
                   ],
                 ),

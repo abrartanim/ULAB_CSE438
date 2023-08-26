@@ -1,148 +1,173 @@
 import 'package:flutter/material.dart';
 import 'package:woodify/const.dart';
-import 'package:woodify/mongodb.dart';
-import 'package:woodify/reuse_widgets/widgets.dart';
-import 'package:woodify/screens/buyer/homepage.dart';
+import 'package:woodify/screens/admin/homepage_a.dart';
 import 'package:woodify/screens/seller/homepage.dart';
 import 'package:woodify/screens/signup.dart';
 
+import '../../mongodb.dart';
+import '../../reuse_widgets/widgets.dart';
+import 'buyer/homepage.dart';
+
 class Login extends StatefulWidget {
-  _Login createState() => _Login();
+  @override
+  _LoginState createState() => _LoginState();
 }
 
+class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  String email = '';
+  String password = '';
 
-class _Login extends State<Login>{
+  Future<void> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
 
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
+      if (email == "admin" && password == "admin")
+        {
+          Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage_a()));
+        }
+else
+  {
+    final allDocuments = await getAllDocuments();
+    print(allDocuments);
+
+    bool isLogin = await verifyLogin(email, password);
+
+    if (isLogin)
+    {
+
+      if(userDoc['catagory'] == 1)
+        Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage_s()));
+      else
+        Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage()));
+
+
+
+    }
+
+    else
+    {
+
+      print("NOT OK");
+      CustomAlertDialog(
+        message: "Incorrect Information !!!",
+      );
+    }
+  }
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Color backgroundColor = Color.fromRGBO(193, 208, 181, 1);
     return Scaffold(
+
         backgroundColor: backgroundColor,
+
         body:SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
 
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget> [
-              Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget> [
-                  Container(
-                    height: 218,
-                    width: 218,
-                    child: Image.asset('assets/images/woodify_logo.png'),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
 
-                  ),
+                    Container(
 
-                  Container(
-                    width: 279,
-                    height: 53,
-
-                    child: CustomTextField(
-                      controller: _email,
-                      hint: "Enter Email",
-                      hide: false,
-                    ),
-                  ),
-                  SizedBox(height: 50),
-                  Container(
-                    width: 279,
-                    height: 53,
-
-                    child: CustomTextField(
-                      controller: _password,
-                      hint: "Enter Password",
-                      hide: true,
+                  height: 218,
+                  width: 218,
+                  child: Image.asset('assets/images/woodify_logo.png'),
                     ),
 
-                  ),
-
-                  SizedBox(height: 10),
-                  Container(
-                    child: TextButton(
-                      style: ButtonStyle(
-                        overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                                (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.focused))
-                                return Colors.red;
-                              return null; // Defer to the widget's default.
-                            }
-                        ),
-                      ),
-                      onPressed: () async {
-
-                        final allDocuments = await getAllDocuments();
-                        print(allDocuments);
-
-                      bool isLogin = await verifyLogin(_email.text, _password.text);
-
-                      if (isLogin)
-                        {
-                          // print("OJ");
-                          //print(userDoc);
-                          if(userDoc['catagory'] == 1)
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage_s()));
-                          else
-                            Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage()));
-
-                          
-
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Email'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your Email';
                         }
-
-                      else
-                        {
-
-                          print("NOT OK");
-                          CustomAlertDialog(
-                            message: "Incorrect Information !!!",
-                          );
-                        }
-
+                        return null;
                       },
-                      child: Text('Submit'),
+                      onChanged: (value) {
+                        setState(() {
+                          email = value;
+                        });
+                      },
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(labelText: 'password'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password';
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
                     ),
 
-                  ),
+                    SizedBox(height: 16),
+                    Container(
+                      child: TextButton(
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.focused))
+                                  return Colors.red;
+                                return null; // Defer to the widget's default.
+                              }
+                          ),
+                        ),
+                        onPressed: () async {
 
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text("Don't have an account?"),
+                            _submitForm();
+
+                        },
+                        child: Text('Submit'),
                       ),
 
-                      Container(
-                        child: TextButton(
-                          style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.resolveWith<Color?>(
-                                    (Set<MaterialState> states) {
-                                  if (states.contains(MaterialState.focused))
-                                    return Colors.red;
-                                  return null; // Defer to the widget's default.
-                                }
-                            ),
-                          ),
-                          onPressed: () {Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Signup(), // SecondScreen is the new screen
-                            ),
-                          ); },
-                          child: Text('Create Account'),
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Container(
+                          child: Text("Don't have an account?"),
                         ),
 
-                      )
-                    ],
-                  )
+                        Container(
+                          child: TextButton(
+                            style: ButtonStyle(
+                              overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                                      (Set<MaterialState> states) {
+                                    if (states.contains(MaterialState.focused))
+                                      return Colors.red;
+                                    return null; // Defer to the widget's default.
+                                  }
+                              ),
+                            ),
+                            onPressed: () {Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Signup(), // SecondScreen is the new screen
+                              ),
+                            ); },
+                            child: Text('Create Account'),
+                          ),
 
+                        )
+                      ],
+                    )
 
-                ],
+                  ],
+                ),
               ),
+            )
 
-
-            ],
-          ),
         ));
-
   }
 }

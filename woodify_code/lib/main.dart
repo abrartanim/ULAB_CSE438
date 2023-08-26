@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 import 'package:woodify/check.dart';
+import 'package:woodify/query.dart';
+import 'package:woodify/screens/admin/homepage_a.dart';
+import 'package:woodify/screens/admin/seller_list.dart';
+import 'package:woodify/screens/buyer/editpro.dart';
 import 'package:woodify/screens/buyer/homepage.dart';
+import 'package:woodify/screens/buyer/mypro.dart';
 
 import 'package:woodify/screens/login.dart';
 import 'package:woodify/screens/seller/add_pro.dart';
@@ -22,7 +27,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Woodify', home: Homepage(),
+    return MaterialApp(title: 'Woodify', home: Login(),
     );
   }
 }

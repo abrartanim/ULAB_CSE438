@@ -20,7 +20,9 @@ class _Current_pro_sState extends State<Current_pro_s> {
               child: AppBar(
                 backgroundColor:Color.fromRGBO(193, 208, 181, 1),
                 title: Text("Current Products"),
-                leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back),),
+                leading: IconButton(onPressed: () {
+                  Navigator.pop(context);
+                }, icon: Icon(Icons.arrow_back),),
 
               ),
             ),

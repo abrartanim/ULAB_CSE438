@@ -46,7 +46,7 @@ class _Add_Pro_sState extends State<Add_Pro_s> {
               child: AppBar(
                 backgroundColor:Color.fromRGBO(193, 208, 181, 1),
                 title: Text("Inventory"),
-                leading: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back),),
+                leading: IconButton(onPressed: () {Navigator.pop(context);}, icon: Icon(Icons.arrow_back),),
 
               ),
             ),

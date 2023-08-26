@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
+import 'package:woodify/const.dart';
+import 'package:woodify/query.dart';
+import 'package:woodify/screens/buyer/cart.dart';
+import 'package:woodify/screens/buyer/homepage.dart';
+import '../screens/buyer/editpro.dart';
+import '../screens/buyer/mypro.dart';
 
 
 
@@ -188,8 +195,12 @@ class CustomButton extends StatelessWidget {
   }
 }
 
+// -------------------------------------------------------------
+
 const Color primaryBG = Color.fromRGBO(255, 248, 222, 1);
 const Color boxcolor =  Color.fromRGBO(214, 232, 219, 1);
+
+//----------------------------------------------------------------
 
 class Rectangle35 extends StatelessWidget {
   @override
@@ -291,7 +302,7 @@ class Custom_AppDrawer extends StatelessWidget {
               color: boxcolor,
             ),
             child: Text(
-              'App Drawer',
+              'Woodify',
               style: TextStyle(color: Colors.black, fontSize: 24),
             ),
           ),
@@ -300,7 +311,7 @@ class Custom_AppDrawer extends StatelessWidget {
             title: Text('Home'),
             onTap: () {
               // Handle navigation to the home page
-              Navigator.pop(context); // Close the drawer
+              Navigator.push(context,MaterialPageRoute(builder: (context) => Homepage())); // Close the drawer
             },
           ),
           ListTile(
@@ -308,7 +319,7 @@ class Custom_AppDrawer extends StatelessWidget {
             title: Text('Query'),
             onTap: () {
               // Handle navigation to the settings page
-              Navigator.pop(context); // Close the drawer
+              Navigator.push(context,MaterialPageRoute(builder: (context) => Query())); // Close the drawer
             },
           ),
           ListTile(
@@ -332,7 +343,15 @@ class Custom_AppDrawer extends StatelessWidget {
             title: Text('Cart'),
             onTap: () {
               // Handle navigation to the settings page
-              Navigator.pop(context); // Close the drawer
+              Navigator.push(context,MaterialPageRoute(builder: (context) => Cart()));; // Close the drawer
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.shopping_cart),
+            title: Text('My Profile'),
+            onTap: () {
+              // Handle navigation to the settings page
+              Navigator.push(context,MaterialPageRoute(builder: (context) => MyProfile_b())); // Close the drawer
             },
           ),
           // Add more list tiles for other menu items
@@ -345,8 +364,9 @@ class Custom_AppDrawer extends StatelessWidget {
 class Items extends StatelessWidget {
   final itemname;
   final price;
+  final index;
 
-  const Items({super.key, required this.itemname, required this.price});
+  const Items({super.key, required this.itemname, required this.price, this.index});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -447,6 +467,17 @@ class Items extends StatelessWidget {
                           child : IconButton(
                             icon: Icon(Icons.add, color: Colors.white),
                             onPressed: () {
+                              var itemno = index;
+                              var temp = [];
+                              temp.add(itemname);
+                              temp.add(price);
+                              cart.add(temp);
+                              const snackBar = SnackBar(
+                                content: Text('Item Successfully Added'),
+                              );
+
+
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               // Handle button press
                             },
                           ),
@@ -474,6 +505,160 @@ class Items extends StatelessWidget {
     );
   }
 }
+
+
+
+class QueryPost extends StatelessWidget {
+  const QueryPost({super.key, this.username, this.query, this.time});
+
+  final username;
+  final query;
+  final time;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 20),
+
+        SizedBox(height: 20),
+        Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  child: Profile_image(image_url: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi0.wp.com%2Fvssmn.org%2Fwp-content%2Fuploads%2F2018%2F12%2F146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png%3Ffit%3D860%252C681%26ssl%3D1&f=1&nofb=1&ipt=15100fcc5064c58f38fa2f03e750427f6af5bfa2ee9ddb09b021d491217fb47e&ipo=images', size: 51,),
+                ),
+                SizedBox(width: 10),
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+
+                        child: Text("$username",
+                          style: TextStyle(
+                            color: Color(0xFF898989),
+                            fontSize: 13,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                          ),),
+
+                      ),
+                      Container(
+                        child: Text("$time",
+                          style: TextStyle(
+                            color: Color(0xFF898989),
+                            fontSize: 13,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w400,
+                          ),),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              child: Text("$query",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w400,
+                ),),
+
+            ),
+            Container(
+              //child: Comments(),
+            )
+          ],
+        ),
+
+
+
+      ],
+    );
+  }
+}
+
+
+class SellerInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 360,
+          height: 102,
+          child: Stack(
+            children: [
+              Positioned(
+                left: 0,
+                top: 0,
+                child: Container(
+                  width: 360,
+                  height: 102,
+                  decoration: BoxDecoration(color: Color(0xFFD9D9D9)),
+                ),
+              ),
+              Positioned(
+                left: 22,
+                top: 15,
+                child: Container(
+                  width: 73,
+                  height: 73,
+                  decoration: ShapeDecoration(
+                    color: Color(0xFF292626),
+                    shape: OvalBorder(),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 102,
+                top: 16,
+                child: SizedBox(
+                  width: 190,
+                  height: 72,
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Anwar Hossain\n',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Verified\nJoined on 12/06/23',
+                          style: TextStyle(
+                            color: Color(0xFF797979),
+                            fontSize: 15,
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+
 
 // Move Navigator.push(context,MaterialPageRoute(builder: (context) => PageNAME));
 
